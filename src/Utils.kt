@@ -21,10 +21,10 @@ fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteA
 fun Any?.println() = println(this)
 
 fun Any?.println(prefix :String) {
-    System.out.println("""$prefix: $this""")
+    System.out.println("""$prefix: '$this'""")
 }
 
 fun Any?.expect(expected: Any):Any {
-    check(this == expected) {"found $this expected $expected"}
+    check(this == expected) {"found '$this' expected '$expected'"}
     return this
 }
