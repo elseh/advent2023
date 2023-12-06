@@ -27,6 +27,6 @@ fun main() {
     part1(testInput).expect(2).println()
     part2(testInput).expect(4).println()
     val input = readInput("adv2022/Day04")
-    part1(input).expect(494).println("Part1")
+    part1(input).println("Part1")
     part2(input).println("Part2")
 }

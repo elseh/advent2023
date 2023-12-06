@@ -18,13 +18,17 @@ fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteA
 /**
  * The cleaner shorthand for printing output.
  */
-fun Any?.println() = println(this)
-
-fun Any?.println(prefix :String) {
-    System.out.println("""$prefix: '$this'""")
+fun <T> T?.println():T? {
+    println(this)
+    return this
 }
 
-fun Any?.expect(expected: Any):Any {
+fun <T> T?.println(prefix :String):T? {
+    kotlin.io.println("""$prefix: '$this'""")
+    return this
+}
+
+fun <T> T?.expect(expected: T?):T? {
     check(this == expected) {"found '$this' expected '$expected'"}
     return this
 }

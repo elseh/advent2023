@@ -55,14 +55,15 @@ fun main() {
             """^\D*(\d|$numFormat)""".toRegex(),
             """(\d|$numFormat)(?!\d|$numFormat)?$""".toRegex())
         return input
+            .map { it.println()!! }
             .map { line ->
-                line.println()
                 formats.map { f ->
                     val (num) = f.find(line)!!.destructured
                     numMap.getOrElse(num) { num.toInt() }
                 }
-            }.sumOf { list ->
-                list.println()
+            }
+            .map { it.println()!! }
+            .sumOf { list ->
                 list[0] * 10 + list[1]
             }
     }
