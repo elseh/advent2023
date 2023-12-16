@@ -18,17 +18,32 @@ fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteA
 /**
  * The cleaner shorthand for printing output.
  */
-fun <T> T?.println():T? {
+fun <T> T.println():T {
     println(this)
     return this
 }
 
-fun <T> T?.println(prefix :String):T? {
+fun <T> T.println(prefix :String):T {
     kotlin.io.println("""$prefix: '$this'""")
     return this
 }
 
-fun <T> T?.expect(expected: T?):T? {
+fun <T> T.expect(expected: T):T {
     check(this == expected) {"found '$this' expected '$expected'"}
     return this
+}
+
+inline fun <T> splitBy(input: Iterable<T>, crossinline predicate: (T) -> Boolean) = sequence<List<T>> {
+    var list = ArrayList<T>()
+    for (item:T in input) {
+        if (predicate(item)) {
+            if (list.isNotEmpty()) {
+                yield(list)
+                list = ArrayList()
+            }
+        } else {
+            list.add(item)
+        }
+    }
+    if (list.isNotEmpty()) yield(list)
 }

@@ -31,41 +31,21 @@ fun main() {
             }.sumOf { list -> list[0] * 10 + list[1] }
     }
 
+    fun parse(num: String) = numMap.getOrElse(num) { num.toInt() }
+
     fun part2(input: List<String>): Int {
         val numFormat = numMap.keys.joinToString("|")
-
         val format = """(\d|$numFormat)""".toRegex()
-        val firsts = input.sumOf { line ->
-            val (num) = format.find(line)!!.destructured
-            numMap.getOrElse(num) { num.toInt() }
-        }
-        val reverse = numFormat.reversed()
-        val revFormat = """(\d|$reverse)""".toRegex()
-        val seconds: Int = input.sumOf { line ->
-            var (num) = revFormat.find(line.reversed())!!.destructured
-            num = num.reversed()
-            numMap.getOrElse(num) { num.toInt() }
-        }
+        val firsts = input
+            .map { format.find(it)!!.destructured }
+            .map { (num) -> num }
+            .sumOf(::parse)
+        val revFormat = """(\d|${numFormat.reversed()})""".toRegex()
+        val seconds: Int = input
+            .map { revFormat.find(it.reversed())!!.destructured }
+            .map { (num) -> num.reversed() }
+            .sumOf(::parse)
         return firsts * 10 + seconds
-    }
-
-    fun part3(input: List<String>): Int {
-        val numFormat = numMap.keys.joinToString("|")
-        val formats = listOf(
-            """^\D*(\d|$numFormat)""".toRegex(),
-            """(\d|$numFormat)(?!\d|$numFormat)?$""".toRegex())
-        return input
-            .map { it.println()!! }
-            .map { line ->
-                formats.map { f ->
-                    val (num) = f.find(line)!!.destructured
-                    numMap.getOrElse(num) { num.toInt() }
-                }
-            }
-            .map { it.println()!! }
-            .sumOf { list ->
-                list[0] * 10 + list[1]
-            }
     }
 
     // test if implementation meets criteria from the description, like:
@@ -74,5 +54,5 @@ fun main() {
     part2(readInput("adv2023/Day01_test2")).expect(299).println()
     val input = readInput("adv2023/Day01")
     part1(input).println("Part1")
-    part3(input).println("Part2")
+    part2(input).println("Part2")
 }

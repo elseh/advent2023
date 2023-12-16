@@ -3,6 +3,7 @@ package adv2023
 import expect
 import println
 import readInput
+import splitBy
 import kotlin.math.max
 import kotlin.math.min
 
@@ -38,17 +39,14 @@ fun main() {
         }
     }
 
-    fun parseRules(input:List<String>) = sequence {
-        var lines = input.dropWhile { it.isNotEmpty() }.drop(1)
-        while (lines.isNotEmpty()) {
-            val section = lines.takeWhile { it.isNotEmpty() }
-            yield(section.drop(1)
-                .map { line -> line.split(" ").map { it.toLong() } }
-                .map { (a,b,c) ->  Conversion(b, a, c) }
-                .sortedBy { it.startA }
-            )
-            lines = lines.drop(section.size + 1)
-        }
+    fun parseRules(input:List<String>): Sequence<List<Conversion>> {
+        return splitBy(input) { it.isEmpty() }
+            .map { block ->
+                block.drop(1)
+                    .map { line -> line.split(" ").map { it.toLong() } }
+                    .map { (a, b, c) -> Conversion(b, a, c) }
+                    .sortedBy { it.startA }
+            }
     }
 
     fun convertList(input: List<Long>, rules: List<Conversion>):List<Long> {
