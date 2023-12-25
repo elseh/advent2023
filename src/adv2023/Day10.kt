@@ -4,15 +4,16 @@ import expect
 import println
 import readInput
 
-const val NORTH = 1
-const val SOUTH = 4
-const val WEST = 8
-const val EAST = 2
 fun main() {
 
     //   1
     // 8   2
     //   4
+
+     val NORTH = 1
+     val SOUTH = 4
+     val WEST = 8
+     val EAST = 2
     val bends = mapOf(
         '|' to NORTH + SOUTH,
         '-' to EAST + WEST,
